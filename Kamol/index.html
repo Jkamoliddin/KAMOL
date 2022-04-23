@@ -1,0 +1,210 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>Крестики сука нолики</h2>
+    <div id="game">
+        <div class="table">
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                    <td>
+                        <div class="inner"></div>
+                    </td>
+                    <td>
+                        <div class="inner"></div>
+                    </td>
+                    <td>
+                        <div class="inner"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="inner"></div>
+                    </td>
+                    <td>
+                        <div class="inner"></div>
+                    </td>
+                    <td>
+                        <div class="inner"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="inner"></div>
+                    </td>
+                    <td>
+                        <div class="inner"></div>
+                    </td>
+                    <td>
+                        <div class="inner"></div>
+                    </td>
+                </tr>
+            </table>
+            <div class="winning"></div>
+        </div>
+        <div id="win_block">
+            <span class="winner"></span>
+            <span class="again">Играть еще!</span>
+        </div>
+    </div>
+    <script src="assets/app.js"></script>
+</body>
+
+</html> -->
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Лабораторная работа №2</title>
+    <style>
+        .sqr {
+            width: 200px;
+            height: 200px
+        }
+        
+        .sqr div {
+            float: left;
+            width: 50px;
+            height: 50px;
+            border: 2px solid white;
+            box-sizing: border-box;
+            background-color: gray;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <H1> Крестики-нолики</H1> <span id="gameinfo">Чтобы поставить крестик, кликните по любой клетке</span>
+    <div class="sqr">
+        <div id="sqr1" class="test" onclick="draw(sqr1)"></div>
+        <div id="sqr2" onclick="draw(sqr2)"></div>
+        <div id="sqr3" onclick="draw(sqr3)"></div>
+        <div id="sqr4" onclick="draw(sqr4)"></div>
+        <div id="sqr5" onclick="draw(sqr5)"></div>
+        <div id="sqr6" onclick="draw(sqr6)"></div>
+        <div id="sqr7" onclick="draw(sqr7)"></div>
+        <div id="sqr8" onclick="draw(sqr8)"></div>
+        <div id="sqr9" onclick="draw(sqr9)"></div>
+        <div id="sqr10" onclick="draw(sqr10)"></div>
+        <div id="sqr11" onclick="draw(sqr11)"></div>
+        <div id="sqr12" onclick="draw(sqr12)"></div>
+        <div id="sqr13" onclick="draw(sqr13)"></div>
+        <div id="sqr14" onclick="draw(sqr14)"></div>
+        <div id="sqr15" onclick="draw(sqr15)"></div>
+        <div id="sqr16" onclick="draw(sqr16)"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+    <script>
+        newGame();
+
+        function draw(sqrv) {
+            var isNull = checkIt(sqrv);
+            if (isNull) {
+                var player = plTurn();
+                $(sqrv).html(player);
+                wins();
+            } else alert("Выберите другой квадрат");
+        }
+
+        function checkIt(sqrv) {
+            var sNull = $(sqrv).text();
+            if (sNull === 'X' || sNull === 'O') {
+                return false;
+            }
+            return true;
+        }
+
+        function plTurn() {
+            var countx = 0,
+                counto = 0;
+            var player;
+            for (var i = 1; i <= 16; i++) {
+                player = document.getElementById("sqr" + i).innerHTML;
+                if (player === 'X') {
+                    countx++;
+                }
+                if (player === 'O') {
+                    counto++;
+                }
+            }
+            if (countx === counto) player = 'X';
+            else player = 'O';
+            return player;
+        }
+
+        function wins() {
+            var count = 0;
+            var a = 1;
+            var b = 2;
+            var c = 3;
+            var d = 4;
+            for (var i = 0; i < 4; i++) {
+                if (winner(a, b, c, d)) {
+                    return;
+                }
+                a += 4;
+                b += 4;
+                c += 4;
+                d += 4;
+            }
+            a = 1;
+            b = 5;
+            c = 9;
+            d = 13;
+            for (var i = 0; i < 4; i++) {
+                if (winner(a, b, c, d)) {
+                    return;
+                }
+                a += 1;
+                b += 1;
+                c += 1;
+                d += 1;
+            }
+            if (winner(1, 6, 11, 16)) {
+                return;
+            }
+            if (winner(4, 7, 10, 13)) {
+                return;
+            }
+            for (var i = 1; i <= 16; i++) {
+                if (document.getElementById("sqr" + i).innerHTML === 'X' || document.getElementById("sqr" + i).innerHTML === 'O') count++;
+            }
+            if (count === 16) {
+                if (confirm("Ничья! Сыграем?")) {
+                    newGame();
+                }
+            }
+        }
+
+        function winner(a, b, c, d) {
+            if ((document.getElementById("sqr" + a).innerHTML === document.getElementById("sqr" + b).innerHTML) && (document.getElementById("sqr" + c).innerHTML === document.getElementById("sqr" + d).innerHTML) && (document.getElementById("sqr" + a).innerHTML === document.getElementById("sqr" + d).innerHTML) && (document.getElementById("sqr" + a).innerHTML != "" || document.getElementById("sqr" + b).innerHTML != "" || document.getElementById("sqr" + c).innerHTML != "" || document.getElementById("sqr" + d).innerHTML != "")) {
+                if (confirm(document.getElementById("sqr" + a).innerHTML + " выиграл!!! Еще раз?")) {
+                    newGame();
+                }
+                return true;
+            } else return false;
+        }
+
+        function newGame() {
+            for (var i = 1; i <= 16; i++) {
+                document.getElementById("sqr" + i).innerHTML = "";
+            }
+        }
+    </script>
+</body>
+
+</html>
